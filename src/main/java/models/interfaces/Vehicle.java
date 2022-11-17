@@ -1,11 +1,11 @@
-package vehicle;
+package models.interfaces;
 
 import java.util.Date;
 
 public interface Vehicle {
-    String getBrand();
+    Manufacturer getManufacturer();
     String getModel();
     Date getConstructionYear();
-    String getColour();
+    String getColor();
     double getPrice();
 }
