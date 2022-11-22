@@ -1,4 +1,5 @@
 import exceptions.VehicleAlreadyExistException;
+import exceptions.VehicleNotFound;
 import models.interfaces.Vehicle;
 
 import java.util.ArrayList;
@@ -14,11 +15,15 @@ public class VehicleExchange {
         throw new VehicleAlreadyExistException();
     }
 
-    public boolean fzgBearbeiten(){
-        return true;
-    }
+    public boolean removeVehicle(Vehicle vehicle) throws VehicleNotFound {
+        if (vehicleList.contains(vehicle)) {
+            return vehicleList.remove(vehicle);
+        }
 
-    public void boerseBeenden(){
+        throw new VehicleNotFound();
+    }
+    
+    public void boerseBeenden() {
         System.exit(0);
     }
 }
