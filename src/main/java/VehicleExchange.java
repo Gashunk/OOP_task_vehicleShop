@@ -7,6 +7,12 @@ import java.util.ArrayList;
 public class VehicleExchange {
     private ArrayList<Vehicle> vehicleList = new ArrayList<>();
 
+    public ArrayList<Vehicle> getVehicleList(){
+        ArrayList<Vehicle> vehicleListCopy = new ArrayList(vehicleList);
+
+        return vehicleListCopy;
+    }
+
     public boolean addVehicle(Vehicle vehicle) throws VehicleAlreadyExistException {
         if (!vehicleList.contains(vehicle)) {
             return vehicleList.add(vehicle);
