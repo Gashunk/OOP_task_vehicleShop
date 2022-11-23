@@ -46,4 +46,29 @@ public class Motorbike implements Vehicle {
     public double getPrice() {
         return price;
     }
+
+    @Override
+    public void setManufacturer(Manufacturer manufacturer) {
+        this.manufacturer = manufacturer;
+    }
+
+    @Override
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    @Override
+    public void setConstructionYear(Date constructionYear) {
+        this.constructionYear = constructionYear;
+    }
+
+    @Override
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    @Override
+    public void setPrice(double price) {
+        this.price = price;
+    }
 }

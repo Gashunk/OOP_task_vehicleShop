@@ -6,15 +6,13 @@ import models.interfaces.Vehicle;
 import java.util.Date;
 
 public class Boat implements Vehicle {
-    private String brand;
     private String model;
     private Manufacturer manufacturer;
     private Date constructionYear;
     private String color;
     private double price;
 
-    public Boat(String brand, String model, Manufacturer manufacturer, Date constructionYear, String color, double price) {
-        this.brand = brand;
+    public Boat(String model, Manufacturer manufacturer, Date constructionYear, String color, double price) {
         this.model = model;
         this.manufacturer = manufacturer;
         this.constructionYear = constructionYear;
@@ -45,5 +43,30 @@ public class Boat implements Vehicle {
     @Override
     public double getPrice() {
         return price;
+    }
+
+    @Override
+    public void setManufacturer(Manufacturer manufacturer) {
+        this.manufacturer = manufacturer;
+    }
+
+    @Override
+    public void setModel(String model) {
+        this.model = model;
+    }
+
+    @Override
+    public void setConstructionYear(Date constructionYear) {
+        this.constructionYear = constructionYear;
+    }
+
+    @Override
+    public void setColor(String color) {
+        this.color = color;
+    }
+
+    @Override
+    public void setPrice(double price) {
+        this.price = price;
     }
 }
