@@ -8,6 +8,7 @@ public interface Vehicle {
     Date getConstructionYear();
     String getColor();
     double getPrice();
+
     void setManufacturer(Manufacturer manufacturer);
     void setModel(String model);
     void setConstructionYear(Date constructionYear);

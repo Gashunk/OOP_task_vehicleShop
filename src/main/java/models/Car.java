@@ -6,15 +6,13 @@ import models.interfaces.Vehicle;
 import java.util.Date;
 
 public class Car implements Vehicle {
-    private String brand;
     private String model;
     private Manufacturer manufacturer;
     private Date constructionYear;
     private String color;
     private double price;
 
-    public Car(String brand, String model, Manufacturer manufacturer, Date constructionYear, String color, double price) {
-        this.brand = brand;
+    public Car(String model, Manufacturer manufacturer, Date constructionYear, String color, double price) {
         this.model = model;
         this.manufacturer = manufacturer;
         this.constructionYear = constructionYear;
