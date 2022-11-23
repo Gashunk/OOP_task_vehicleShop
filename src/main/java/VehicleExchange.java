@@ -29,14 +29,14 @@ public class VehicleExchange {
         throw new VehicleNotFound();
     }
 
-    public void update(Vehicle vehicle, int index){
+    public boolean update(Vehicle vehicle, int index){
         if(vehicleList.get(index) != null){
-            vehicleList.get(index).setManufacturer(vehicle.getManufacturer());
-            vehicleList.get(index).setModel(vehicle.getModel());
-            vehicleList.get(index).setConstructionYear(vehicle.getConstructionYear());
-            vehicleList.get(index).setColor(vehicle.getColor());
-            vehicleList.get(index).setPrice(vehicle.getPrice());
+            vehicleList.set(index, vehicle);
+            
+            return true;
         }
+
+        return false;
     }
     
     public void boerseBeenden() {
