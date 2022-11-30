@@ -39,7 +39,7 @@ public class VehicleExchange {
         return false;
     }
     
-    public void boerseBeenden() {
+    public void exitProgram() {
         System.exit(0);
     }
 }

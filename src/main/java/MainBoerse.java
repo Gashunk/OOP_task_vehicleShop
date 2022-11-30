@@ -1,16 +1,16 @@
 import java.util.Date;
+import java.util.Scanner;
 
 public class MainBoerse {
+    private VehicleExchange vehicleExchange;
+    private Scanner scanner = new Scanner(System.in);
 
-    public static void main(String[] args) {
-        VehicleExchange vehicleExchange = new VehicleExchange();
-        hauptMenue();
+    public MainBoerse(VehicleExchange vehicleExchange) {
+        this.vehicleExchange = vehicleExchange;
     }
 
-    public static void hauptMenue() {
-        System.out.println("------------------------------------------------------------------------------------------");
-        System.out.format("%-22s%-15s%-20s\n", "Fahrzeugbörse", "Hauptmenü", "von: Lothar Neumann");
-        System.out.println("------------------------------------------------------------------------------------------");
+    public void hauptMenue() {
+        showMenu(1);
         System.out.println("""
                 1) Fahrzeug anlegen
                 2) Fahrzeug bearbeiten
@@ -20,21 +20,52 @@ public class MainBoerse {
                 ------------------------------------------------------------------------------------------
                 Bitte wählen:""");
 
-        String choice = null;
-        switch (choice) {
-            //case 1: -> fzgAnlegen();
+        int input = checkInt();
+        switch (input) {
+            case 1:
+                createVehicle();
+                break;
+
             //case 2: -> fzgBearbeiten();
             //case 3: -> getVehicle();
             //case 4: -> removeVehicle();
             //case 0: -> boerseBeenden();
-            default -> {
+            default: {
                 System.out.println("Falscheingabe, bitte versuchen sie es erneut!");
                 hauptMenue();
             }
         }
     }
 
-    public void createVehicle(){
+    public void createVehicle() {
+        showMenu(2);
 
+    }
+
+    public int checkInt() {
+        while (true) {
+            try {
+                return Integer.parseInt(scanner.nextLine());
+            } catch (NumberFormatException e) {
+                System.out.println("Bitte nur ganze Zahlen eingeben!");
+            }
+        }
+    }
+
+    public void showMenu(int menuType){
+        String menuTitle = "";
+        switch (menuType){
+            case 1:
+                menuTitle = "Hauptmenü";
+                break;
+
+            case 2:
+                menuTitle = "Fahrzeug anlegen";
+                break;
+        }
+
+        System.out.println("------------------------------------------------------------------------------------------");
+        System.out.format("%-22s%-22s%-20s\n", "Fahrzeugbörse", menuTitle, "von: Lothar Neumann");
+        System.out.println("------------------------------------------------------------------------------------------");
     }
 }
