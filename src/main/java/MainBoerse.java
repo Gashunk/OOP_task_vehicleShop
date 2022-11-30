@@ -1,4 +1,9 @@
-import java.util.Date;
+import models.ManufacturerImpl;
+
+import java.math.BigDecimal;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Scanner;
 
 public class MainBoerse {
@@ -9,7 +14,7 @@ public class MainBoerse {
         this.vehicleExchange = vehicleExchange;
     }
 
-    public void hauptMenue() {
+    public void hauptMenue() throws ParseException {
         showMenu(1);
         System.out.println("""
                 1) Fahrzeug anlegen
@@ -35,11 +40,59 @@ public class MainBoerse {
                 hauptMenue();
             }
         }
+
+
     }
 
-    public void createVehicle() {
+    public void createVehicle() throws ParseException {
         showMenu(2);
 
+        System.out.println("""
+                Wählen sie ein Fahrzeugtyp aus:
+                1) Pkw
+                2) Lkw
+                3) Motorrad
+                4) Boot
+                0) zurück zum Hauptmenü
+                ------------------------------------------------------------------------------------------
+                Bitte wählen:""");
+
+        int vehicleType = checkInt();
+
+        if (vehicleType == 0 || vehicleType > 4 || vehicleType < 0) {
+            hauptMenue();
+        }
+
+        System.out.println("Geben sie den Hersteller ein!");
+        ManufacturerImpl manufacturer = new ManufacturerImpl(checkString());
+
+        System.out.println("Geben sie den Namen des Modells ein!");
+        String model = checkString();
+
+        System.out.println("Geben sie das Baujahr ein (YYYY).");
+        DateFormat df = new SimpleDateFormat("yyyy");
+        df.parse(checkString());
+
+        System.out.println("Geben sie die Farbe ein!");
+        String color = checkString();
+
+        System.out.println("Geben sie den Preis ein!");
+
+    }
+
+    public void showMenu(int menuType) {
+        String menuTitle = switch (menuType) {
+            case 1 -> "Hauptmenü";
+            case 2 -> "Fahrzeug anlegen";
+            case 3 -> "Fahrzeug suchen";
+            case 4 -> "Fahrzeug löschen";
+            case 5 -> "Börse beenden";
+            default -> "";
+        };
+
+        System.out.println("------------------------------------------------------------------------------------------");
+        System.out.format("%-22s%-22s%-20s\n", "Fahrzeugbörse", menuTitle, "von: Lothar Neumann");
+        System.out.println("------------------------------------------------------------------------------------------");
     }
 
     public int checkInt() {
@@ -52,20 +105,20 @@ public class MainBoerse {
         }
     }
 
-    public void showMenu(int menuType){
-        String menuTitle = "";
-        switch (menuType){
-            case 1:
-                menuTitle = "Hauptmenü";
-                break;
+    public String checkString() throws ParseException {
+        while(true){
+            String input = scanner.nextLine();
 
-            case 2:
-                menuTitle = "Fahrzeug anlegen";
-                break;
+            if(input.isEmpty()){
+                System.out.println("Falscheingabe, es wird ins Hauptmenü zurückgekehrt!");
+                hauptMenue();
+            } else{
+                return input;
+            }
         }
+    }
 
-        System.out.println("------------------------------------------------------------------------------------------");
-        System.out.format("%-22s%-22s%-20s\n", "Fahrzeugbörse", menuTitle, "von: Lothar Neumann");
-        System.out.println("------------------------------------------------------------------------------------------");
+    public BigDecimal checkDouble(){
+        
     }
 }

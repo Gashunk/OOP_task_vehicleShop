@@ -3,6 +3,7 @@ package models;
 import models.interfaces.Manufacturer;
 import models.interfaces.Vehicle;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class Motorbike implements Vehicle {
@@ -10,9 +11,9 @@ public class Motorbike implements Vehicle {
     private Manufacturer manufacturer;
     private Date constructionYear;
     private String color;
-    private double price;
+    private BigDecimal price;
 
-    public Motorbike(String model, Manufacturer manufacturer, Date constructionYear, String color, double price) {
+    public Motorbike(String model, Manufacturer manufacturer, Date constructionYear, String color, BigDecimal price) {
         this.model = model;
         this.manufacturer = manufacturer;
         this.constructionYear = constructionYear;
@@ -41,7 +42,7 @@ public class Motorbike implements Vehicle {
     }
 
     @Override
-    public double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
@@ -66,7 +67,7 @@ public class Motorbike implements Vehicle {
     }
 
     @Override
-    public void setPrice(double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 }
