@@ -77,7 +77,7 @@ public class MainBoerse {
         String color = checkString();
 
         System.out.println("Geben sie den Preis ein!");
-
+        BigDecimal price = checkBigDecimal();
     }
 
     public void showMenu(int menuType) {
@@ -106,19 +106,25 @@ public class MainBoerse {
     }
 
     public String checkString() throws ParseException {
-        while(true){
+        while (true) {
             String input = scanner.nextLine();
 
-            if(input.isEmpty()){
+            if (input.isEmpty()) {
                 System.out.println("Falscheingabe, es wird ins Hauptmenü zurückgekehrt!");
                 hauptMenue();
-            } else{
+            } else {
                 return input;
             }
         }
     }
 
-    public BigDecimal checkDouble(){
-        
+    public BigDecimal checkBigDecimal() {
+        while (true) {
+            try {
+                return BigDecimal.valueOf(Double.parseDouble(scanner.nextLine()));
+            } catch (NumberFormatException exception) {
+                System.out.println("Bitte eine Fließkommazahl eingeben!");
+            }
+        }
     }
 }
