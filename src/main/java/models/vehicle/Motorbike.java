@@ -1,4 +1,4 @@
-package models;
+package models.vehicle;
 
 import models.interfaces.Manufacturer;
 import models.interfaces.Vehicle;
@@ -6,14 +6,14 @@ import models.interfaces.Vehicle;
 import java.math.BigDecimal;
 import java.util.Date;
 
-public class Car implements Vehicle {
+public class Motorbike implements Vehicle {
     private String model;
     private Manufacturer manufacturer;
-    private Date constructionYear;
+    private int constructionYear;
     private String color;
     private BigDecimal price;
 
-    public Car(String model, Manufacturer manufacturer, Date constructionYear, String color, BigDecimal price) {
+    public Motorbike(String model, Manufacturer manufacturer, int constructionYear, String color, BigDecimal price) {
         this.model = model;
         this.manufacturer = manufacturer;
         this.constructionYear = constructionYear;
@@ -32,7 +32,7 @@ public class Car implements Vehicle {
     }
 
     @Override
-    public Date getConstructionYear() {
+    public int getConstructionYear() {
         return constructionYear;
     }
 
@@ -57,7 +57,7 @@ public class Car implements Vehicle {
     }
 
     @Override
-    public void setConstructionYear(Date constructionYear) {
+    public void setConstructionYear(int constructionYear) {
         this.constructionYear = constructionYear;
     }
 

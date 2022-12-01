@@ -1,4 +1,4 @@
-package models;
+package models.manufacturer;
 
 import models.interfaces.Manufacturer;
 

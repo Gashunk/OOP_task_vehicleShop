@@ -1,9 +1,9 @@
-import models.ManufacturerImpl;
+import exceptions.VehicleAlreadyExistException;
+import models.vehicle.Car;
+import models.manufacturer.ManufacturerImpl;
 
 import java.math.BigDecimal;
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Scanner;
 
 public class MainBoerse {
@@ -14,7 +14,7 @@ public class MainBoerse {
         this.vehicleExchange = vehicleExchange;
     }
 
-    public void hauptMenue() throws ParseException {
+    public void hauptMenue() throws ParseException, VehicleAlreadyExistException {
         showMenu(1);
         System.out.println("""
                 1) Fahrzeug anlegen
@@ -44,7 +44,7 @@ public class MainBoerse {
 
     }
 
-    public void createVehicle() throws ParseException {
+    public void createVehicle() throws ParseException, VehicleAlreadyExistException {
         showMenu(2);
 
         System.out.println("""
@@ -70,14 +70,23 @@ public class MainBoerse {
         String model = checkString();
 
         System.out.println("Geben sie das Baujahr ein (YYYY).");
-        DateFormat df = new SimpleDateFormat("yyyy");
-        df.parse(checkString());
+        int constructionYear = checkInt();
+
 
         System.out.println("Geben sie die Farbe ein!");
         String color = checkString();
 
         System.out.println("Geben sie den Preis ein!");
         BigDecimal price = checkBigDecimal();
+
+        if(model.isEmpty() || manufacturer.getName().isEmpty() || constructionYear == null ||)
+        System.out.println("Sind ihre Eingaben ");
+
+        switch (vehicleType){
+            case 1:
+
+                vehicleExchange.addVehicle(new Car(model, manufacturer, constructionYear, color, price));
+        }
     }
 
     public void showMenu(int menuType) {
@@ -95,17 +104,18 @@ public class MainBoerse {
         System.out.println("------------------------------------------------------------------------------------------");
     }
 
-    public int checkInt() {
+    public int checkInt() throws VehicleAlreadyExistException, ParseException {
         while (true) {
             try {
                 return Integer.parseInt(scanner.nextLine());
             } catch (NumberFormatException e) {
                 System.out.println("Bitte nur ganze Zahlen eingeben!");
+                hauptMenue();
             }
         }
     }
 
-    public String checkString() throws ParseException {
+    public String checkString() throws ParseException, VehicleAlreadyExistException {
         while (true) {
             String input = scanner.nextLine();
 
@@ -126,5 +136,10 @@ public class MainBoerse {
                 System.out.println("Bitte eine Fließkommazahl eingeben!");
             }
         }
+    }
+
+    public void assmus(){
+        System.out.println("Falscheingabe");
+        hauptMenue();
     }
 }
