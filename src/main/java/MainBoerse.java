@@ -1,5 +1,5 @@
 import exceptions.VehicleAlreadyExistException;
-import models.vehicle.Car;
+import models.vehicle.*;
 import models.manufacturer.ManufacturerImpl;
 
 import java.math.BigDecimal;
@@ -63,6 +63,16 @@ public class MainBoerse {
             hauptMenue();
         }
 
+        String vehicleTypeName = switch (vehicleType){
+            case 1 -> VehicleType.CAR.getName();
+            case 2 -> VehicleType.TRUCK.getName();
+            case 3 -> VehicleType.MOTORBIKE.getName();
+            case 4 -> VehicleType.BOAT.getName();
+            default -> throw new IllegalStateException("Unexpected value: " + vehicleType);
+        };
+
+
+
         System.out.println("Geben sie den Hersteller ein!");
         ManufacturerImpl manufacturer = new ManufacturerImpl(checkString());
 
@@ -79,13 +89,21 @@ public class MainBoerse {
         System.out.println("Geben sie den Preis ein!");
         BigDecimal price = checkBigDecimal();
 
-        if(model.isEmpty() || manufacturer.getName().isEmpty() || constructionYear == null ||)
-        System.out.println("Sind ihre Eingaben ");
+//        System.out.println("Sind ihre Eingaben korrekt?");
+//        System.out.println("Fahrzeugtyp: " + vehicleTypeName
+//        + "\nHersteller: " + manufacturer.getName()
+//        + "\nModell: " + model
+//        + "\nBaujahr: " + constructionYear
+//        + "\nFarbe: " + color
+//        + "\nPreis: " + price);
+
+
 
         switch (vehicleType){
-            case 1:
-
-                vehicleExchange.addVehicle(new Car(model, manufacturer, constructionYear, color, price));
+            case 1 -> vehicleExchange.addVehicle(new Car(model, manufacturer, constructionYear, color, price));
+            case 2 -> vehicleExchange.addVehicle(new Truck(model, manufacturer, constructionYear, color, price));
+            case 3 -> vehicleExchange.addVehicle(new Motorbike(model, manufacturer, constructionYear, color, price));
+            case 4 -> vehicleExchange.addVehicle(new Boat(model, manufacturer, constructionYear, color, price));
         }
     }
 
@@ -138,8 +156,8 @@ public class MainBoerse {
         }
     }
 
-    public void assmus(){
-        System.out.println("Falscheingabe");
-        hauptMenue();
-    }
+//    public void assmus() throws VehicleAlreadyExistException, ParseException {
+//        System.out.println("Falscheingabe");
+//        hauptMenue();
+//    }
 }
