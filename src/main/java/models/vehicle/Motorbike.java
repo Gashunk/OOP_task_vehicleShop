@@ -47,6 +47,11 @@ public class Motorbike implements Vehicle {
     }
 
     @Override
+    public String getVehicleType() {
+        return VehicleType.MOTORBIKE.getName();
+    }
+
+    @Override
     public void setManufacturer(Manufacturer manufacturer) {
         this.manufacturer = manufacturer;
     }

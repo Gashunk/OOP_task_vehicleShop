@@ -47,6 +47,11 @@ public class Boat implements Vehicle {
     }
 
     @Override
+    public String getVehicleType() {
+        return VehicleType.BOAT.getName();
+    }
+
+    @Override
     public void setManufacturer(Manufacturer manufacturer) {
         this.manufacturer = manufacturer;
     }

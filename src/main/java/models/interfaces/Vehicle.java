@@ -9,6 +9,7 @@ public interface Vehicle {
     int getConstructionYear();
     String getColor();
     BigDecimal getPrice();
+    String getVehicleType();
 
     void setManufacturer(Manufacturer manufacturer);
     void setModel(String model);

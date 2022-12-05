@@ -21,6 +21,9 @@ public class Car implements Vehicle {
         this.price = price;
     }
 
+    public String getName(){
+        return "Pkw";
+    }
     @Override
     public Manufacturer getManufacturer() {
         return manufacturer;
@@ -44,6 +47,11 @@ public class Car implements Vehicle {
     @Override
     public BigDecimal getPrice() {
         return price;
+    }
+
+    @Override
+    public String getVehicleType() {
+        return VehicleType.CAR.getName();
     }
 
     @Override

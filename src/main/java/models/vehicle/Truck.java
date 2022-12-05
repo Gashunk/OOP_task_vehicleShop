@@ -47,6 +47,11 @@ public class Truck implements Vehicle {
     }
 
     @Override
+    public String getVehicleType() {
+        return VehicleType.TRUCK.getName();
+    }
+
+    @Override
     public void setManufacturer(Manufacturer manufacturer) {
         this.manufacturer = manufacturer;
     }
