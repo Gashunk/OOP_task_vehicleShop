@@ -31,22 +31,23 @@ public class MainBoerse {
         switch (input) {
             case 1:
                 createVehicle();
+                hauptMenue();
                 break;
 
             case 2:
                 updateVehicle();
+                hauptMenue();
                 break;
 
-            //case 3: -> getVehicle();
-            //case 4: -> removeVehicle();
-            //case 0: -> boerseBeenden();
+            case 3:
+                getVehicle();
+                //case 4: -> removeVehicle();
+                //case 0: -> boerseBeenden();
             default: {
                 System.out.println("Falscheingabe, bitte versuchen sie es erneut!");
                 hauptMenue();
             }
         }
-
-
     }
 
     public void createVehicle() throws ParseException, VehicleAlreadyExistException {
@@ -67,15 +68,6 @@ public class MainBoerse {
         if (vehicleType == 0 || vehicleType > 4 || vehicleType < 0) {
             hauptMenue();
         }
-
-        String vehicleTypeName = switch (vehicleType) {
-            case 1 -> VehicleType.CAR.getName();
-            case 2 -> VehicleType.TRUCK.getName();
-            case 3 -> VehicleType.MOTORBIKE.getName();
-            case 4 -> VehicleType.BOAT.getName();
-            default -> throw new IllegalStateException("Unexpected value: " + vehicleType);
-        };
-
 
         System.out.println("Geben sie den Hersteller ein!");
         ManufacturerImpl manufacturer = new ManufacturerImpl(checkString());
@@ -108,22 +100,68 @@ public class MainBoerse {
             case 3 -> vehicleExchange.addVehicle(new Motorbike(model, manufacturer, constructionYear, color, price));
             case 4 -> vehicleExchange.addVehicle(new Boat(model, manufacturer, constructionYear, color, price));
         }
-
-        hauptMenue();
     }
 
     public void updateVehicle() throws VehicleAlreadyExistException, ParseException {
+        showMenu(3);
         printVehicles();
 
         System.out.println("Welches Fahrzeug wollen sie bearbeiten? Bitte geben sie die Laufnummer ein: ");
         int updateIndex = checkInt();
+
+        System.out.println("Geben sie den Hersteller ein!");
+        ManufacturerImpl manufacturer = new ManufacturerImpl(checkString());
+
+        System.out.println("Geben sie den Namen des Modells ein!");
+        String model = checkString();
+
+        System.out.println("Geben sie das Baujahr ein (YYYY).");
+        int constructionYear = checkInt();
+
+
+        System.out.println("Geben sie die Farbe ein!");
+        String color = checkString();
+
+        System.out.println("Geben sie den Preis ein!");
+        BigDecimal price = checkBigDecimal();
+
+        vehicleExchange.getVehicleList().get(updateIndex).setManufacturer(manufacturer);
+        vehicleExchange.getVehicleList().get(updateIndex).setModel(model);
+        vehicleExchange.getVehicleList().get(updateIndex).setConstructionYear(constructionYear);
+        vehicleExchange.getVehicleList().get(updateIndex).setColor(color);
+        vehicleExchange.getVehicleList().get(updateIndex).setPrice(price);
     }
 
-    public void printVehicles() {
+    public void getVehicle() throws VehicleAlreadyExistException, ParseException {
+        showMenu(4);
+
+        System.out.println("""
+                Wonach wollen sie suchen:
+                (1) Fahrzeugtyp
+                (2) Modell
+                (3) Hersteller
+                (4) Baujahr
+                (5) Farbe
+                (6) Preis""");
+        
+        int input = checkInt();
+        String choice = switch (input) {
+            case 1 -> "den Fahrzeugtyp";
+            case 2 -> "das Modell";
+            case 3 -> "den Hersteller";
+            case 4 -> "das Baujahr";
+            case 5 -> "die Farbe";
+            case 6 -> "den Preis";
+            default -> "";
+        };
+
+        if(input == 1 || input == 2 || input == 3 || input == 5) {
+            System.out.println("Geben sie " + choice + " ein: ");
+
+        }
+
+
         ArrayList<Vehicle> vehicleList = new ArrayList<>(vehicleExchange.getVehicleList());
-
-        showMenu(3);
-
 
         System.out.format("| %-12s | %-12s | %-12s | %-12s | %-12s | %-12s| %-12s |\n",
                 "Laufnummer",
@@ -141,6 +179,32 @@ public class MainBoerse {
                     index,
                     vehicleList.get(index).getVehicleType(),
                     vehicleList.get(index).getModel(),
+                    vehicleList.get(index).getManufacturer().getName(),
+                    vehicleList.get(index).getConstructionYear(),
+                    vehicleList.get(index).getColor(),
+                    vehicleList.get(index).getPrice());
+        }
+    }
+
+    public void printVehicles() {
+        ArrayList<Vehicle> vehicleList = new ArrayList<>(vehicleExchange.getVehicleList());
+
+        System.out.format("| %-12s | %-12s | %-12s | %-12s | %-12s | %-12s| %-12s |\n",
+                "Laufnummer",
+                "Modell",
+                "Fahrzeugtyp",
+                "Hersteller",
+                "Baujahr",
+                "Farbe",
+                "Preis");
+        System.out.println("---------------------------------------------------------------------------------------------------------");
+
+
+        for (int index = 0; index < vehicleList.size(); index++) {
+            System.out.format("| %-12s | %-12s | %-12s | %-12s | %-12s | %-12s| %-12s |\n",
+                    index,
+                    vehicleList.get(index).getModel(),
+                    vehicleList.get(index).getVehicleType(),
                     vehicleList.get(index).getManufacturer().getName(),
                     vehicleList.get(index).getConstructionYear(),
                     vehicleList.get(index).getColor(),
