@@ -1,4 +1,3 @@
-import exceptions.VehicleAlreadyExistException;
 import models.interfaces.Vehicle;
 import models.manufacturer.ManufacturerImpl;
 import models.vehicle.*;
@@ -6,6 +5,7 @@ import models.vehicle.*;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Locale;
 import java.util.Scanner;
 
 public class MainBoerse {
@@ -16,15 +16,16 @@ public class MainBoerse {
         this.vehicleExchange = vehicleExchange;
     }
 
-    public void hauptMenue() throws ParseException, VehicleAlreadyExistException {
+    public void hauptMenue() throws ParseException {
         showMenu(1);
         System.out.println("""
                 1) Fahrzeug anlegen
                 2) Fahrzeug bearbeiten
                 3) Fahrzeug suchen
                 4) Fahrzeug löschen
+                5) Fahrzeugdummy anlegen
                 0) Börse beenden
-                ------------------------------------------------------------------------------------------
+                ---------------------------------------------------------------------------------------------------------------------------------------------------
                 Bitte wählen:""");
 
         int input = checkInt();
@@ -41,8 +42,23 @@ public class MainBoerse {
 
             case 3:
                 getVehicle();
-                //case 4: -> removeVehicle();
-                //case 0: -> boerseBeenden();
+                hauptMenue();
+                break;
+
+            case 4:
+                deleteVehicle();
+                hauptMenue();
+                break;
+
+            case 5:
+                vehicleExchange.dummy();
+                hauptMenue();
+                break;
+
+            case 0:
+                exit();
+                break;
+
             default: {
                 System.out.println("Falscheingabe, bitte versuchen sie es erneut!");
                 hauptMenue();
@@ -50,7 +66,7 @@ public class MainBoerse {
         }
     }
 
-    public void createVehicle() throws ParseException, VehicleAlreadyExistException {
+    public void createVehicle() throws ParseException {
         showMenu(2);
 
         System.out.println("""
@@ -60,7 +76,7 @@ public class MainBoerse {
                 3) Motorrad
                 4) Boot
                 0) zurück zum Hauptmenü
-                ------------------------------------------------------------------------------------------
+                ---------------------------------------------------------------------------------------------------------------------------------------------------
                 Bitte wählen:""");
 
         int vehicleType = checkInt();
@@ -102,9 +118,9 @@ public class MainBoerse {
         }
     }
 
-    public void updateVehicle() throws VehicleAlreadyExistException, ParseException {
+    public void updateVehicle() throws ParseException {
         showMenu(3);
-        printVehicles();
+        printVehicles(vehicleExchange.getVehicleList());
 
         System.out.println("Welches Fahrzeug wollen sie bearbeiten? Bitte geben sie die Laufnummer ein: ");
         int updateIndex = checkInt();
@@ -132,64 +148,65 @@ public class MainBoerse {
         vehicleExchange.getVehicleList().get(updateIndex).setPrice(price);
     }
 
-    public void getVehicle() throws VehicleAlreadyExistException, ParseException {
+    public void getVehicle() throws ParseException {
         showMenu(4);
 
-        System.out.println("""
-                Wonach wollen sie suchen:
-                (1) Fahrzeugtyp
-                (2) Modell
-                (3) Hersteller
-                (4) Baujahr
-                (5) Farbe
-                (6) Preis""");
-        
-        int input = checkInt();
-        String choice = switch (input) {
-            case 1 -> "den Fahrzeugtyp";
-            case 2 -> "das Modell";
-            case 3 -> "den Hersteller";
-            case 4 -> "das Baujahr";
-            case 5 -> "die Farbe";
-            case 6 -> "den Preis";
-            default -> "";
-        };
+        System.out.println("Geben sie einen Suchbegriff ein: ");
+        String input = checkString();
 
-        if(input == 1 || input == 2 || input == 3 || input == 5) {
-            System.out.println("Geben sie " + choice + " ein: ");
+        printVehicles(searchVehicleList(input));
+    }
 
+    public ArrayList<Vehicle> searchVehicleList(String input) {
+        ArrayList<Vehicle> searchList = new ArrayList<>();
+
+        for (int index = 0; index < vehicleExchange.getVehicleList().size(); index++) {
+            if (vehicleExchange.getVehicleList().get(index).getVehicleType().equals(input)
+                    || vehicleExchange.getVehicleList().get(index).getColor().equals(input)
+                    || vehicleExchange.getVehicleList().get(index).getManufacturer().getName().equals(input)
+                    || vehicleExchange.getVehicleList().get(index).getModel().equals(input)
+                    || vehicleExchange.getVehicleList().get(index).getVehicleType().equals(input)
+                    || String.valueOf(vehicleExchange.getVehicleList().get(index).getConstructionYear()).equals(input)
+                    || String.valueOf(vehicleExchange.getVehicleList().get(index).getPrice()).equals(input)) {
+                searchList.add(vehicleExchange.getVehicleList().get(index));
+            }
         }
 
+        return searchList;
+    }
 
-        ArrayList<Vehicle> vehicleList = new ArrayList<>(vehicleExchange.getVehicleList());
+    public void deleteVehicle() throws ParseException {
+        showMenu(5);
+        printVehicles(vehicleExchange.getVehicleList());
 
-        System.out.format("| %-12s | %-12s | %-12s | %-12s | %-12s | %-12s| %-12s |\n",
-                "Laufnummer",
-                "Fahrzeugtyp",
-                "Modell",
-                "Hersteller",
-                "Baujahr",
-                "Farbe",
-                "Preis");
-        System.out.println("---------------------------------------------------------------------------------------------------------");
+        System.out.println("Geben sie die zu löschende Laufnummer ein: ");
+        int deleteIndex = checkInt();
 
+        System.out.println("Sind sie sicher, dass sie die Laufnummer " + deleteIndex + " löschen wollen? j/n");
+        String approval = checkString().toLowerCase();
 
-        for (int index = 0; index < vehicleList.size(); index++) {
-            System.out.format("| %-12s | %-12s | %-12s | %-12s | %-12s | %-12s| %-12s |\n",
-                    index,
-                    vehicleList.get(index).getVehicleType(),
-                    vehicleList.get(index).getModel(),
-                    vehicleList.get(index).getManufacturer().getName(),
-                    vehicleList.get(index).getConstructionYear(),
-                    vehicleList.get(index).getColor(),
-                    vehicleList.get(index).getPrice());
+        if (approval.equals("j")){
+           vehicleExchange.removeVehicle(vehicleExchange.getVehicleList().get(deleteIndex));
+        } else {
+            System.out.println("Hauptmenü wird angezeigt.");
+            hauptMenue();
         }
     }
 
-    public void printVehicles() {
-        ArrayList<Vehicle> vehicleList = new ArrayList<>(vehicleExchange.getVehicleList());
+    public void exit() throws ParseException {
+        System.out.println("Sind sie sicher? j/n");
+        String input = checkString().toLowerCase();
 
-        System.out.format("| %-12s | %-12s | %-12s | %-12s | %-12s | %-12s| %-12s |\n",
+        if(input.equals("j")){
+            vehicleExchange.exitProgram();
+        } else {
+            hauptMenue();
+        }
+    }
+
+    public void printVehicles(ArrayList<Vehicle> printList) {
+
+        System.out.format("| %-18s | %-18s | %-18s | %-18s | %-18s | %-18s| %-18s |\n",
                 "Laufnummer",
                 "Modell",
                 "Fahrzeugtyp",
@@ -197,38 +214,38 @@ public class MainBoerse {
                 "Baujahr",
                 "Farbe",
                 "Preis");
-        System.out.println("---------------------------------------------------------------------------------------------------------");
+        System.out.println("---------------------------------------------------------------------------------------------------------------------------------------------------");
 
-
-        for (int index = 0; index < vehicleList.size(); index++) {
-            System.out.format("| %-12s | %-12s | %-12s | %-12s | %-12s | %-12s| %-12s |\n",
+        for (int index = 0; index < printList.size(); index++) {
+            System.out.format("| %-18s | %-18s | %-18s | %-18s | %-18s | %-18s| %-18s |\n",
                     index,
-                    vehicleList.get(index).getModel(),
-                    vehicleList.get(index).getVehicleType(),
-                    vehicleList.get(index).getManufacturer().getName(),
-                    vehicleList.get(index).getConstructionYear(),
-                    vehicleList.get(index).getColor(),
-                    vehicleList.get(index).getPrice());
+                    printList.get(index).getModel(),
+                    printList.get(index).getVehicleType(),
+                    printList.get(index).getManufacturer().getName(),
+                    printList.get(index).getConstructionYear(),
+                    printList.get(index).getColor(),
+                    printList.get(index).getPrice());
         }
+        System.out.println("---------------------------------------------------------------------------------------------------------------------------------------------------");
     }
 
     public void showMenu(int menuType) {
         String menuTitle = switch (menuType) {
-            case 1 -> "Hauptmenü";
+            case 1 -> "Hauptmenue";
             case 2 -> "Fahrzeug anlegen";
             case 3 -> "Fahrzeug bearbeiten";
             case 4 -> "Fahrzeug suchen";
-            case 5 -> "Fahrzeug löschen";
-            case 6 -> "Börse beenden";
+            case 5 -> "Fahrzeug loeschen";
+            case 6 -> "Boerse beenden";
             default -> "";
         };
 
-        System.out.println("---------------------------------------------------------------------------------------------------------");
-        System.out.format("| %-22s%-22s%-58s |\n", "Fahrzeugbörse", menuTitle, "von: Lothar Neumann");
-        System.out.println("---------------------------------------------------------------------------------------------------------");
+        System.out.println("---------------------------------------------------------------------------------------------------------------------------------------------------");
+        System.out.format("| %-22s%-22s%-100s |\n", "Fahrzeugbörse", menuTitle, "von: Lothar Neumann");
+        System.out.println("---------------------------------------------------------------------------------------------------------------------------------------------------");
     }
 
-    public int checkInt() throws VehicleAlreadyExistException, ParseException {
+    public int checkInt() throws ParseException {
         while (true) {
             try {
                 return Integer.parseInt(scanner.nextLine());
@@ -239,15 +256,28 @@ public class MainBoerse {
         }
     }
 
-    public String checkString() throws ParseException, VehicleAlreadyExistException {
+    public String checkString() throws ParseException {
         while (true) {
             String input = scanner.nextLine();
 
-            if (input.isEmpty()) {
+            String output = input.replace("ü", "ue")
+                    .replace("ö", "oe")
+                    .replace("ä", "ae")
+                    .replace("ß", "ss");
+
+            output = output.replaceAll("Ü(?=[a-zäöüß ])", "Ue")
+                    .replaceAll("Ö(?=[a-zäöüß ])", "Oe")
+                    .replaceAll("Ä(?=[a-zäöüß ])", "Ae");
+
+            output = output.replace("Ü", "UE")
+                    .replace("Ö", "OE")
+                    .replace("Ä", "AE");
+
+            if (output.isEmpty()) {
                 System.out.println("Falscheingabe, es wird ins Hauptmenü zurückgekehrt!");
                 hauptMenue();
             } else {
-                return input;
+                return output;
             }
         }
     }
