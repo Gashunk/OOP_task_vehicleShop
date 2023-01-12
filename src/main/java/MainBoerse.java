@@ -125,6 +125,11 @@ public class MainBoerse {
         System.out.println("Welches Fahrzeug wollen sie bearbeiten? Bitte geben sie die Laufnummer ein: ");
         int updateIndex = checkInt();
 
+        if(updateIndex > vehicleExchange.getVehicleList().size()){
+            System.out.println("Laufnummer existiert nicht!");
+            hauptMenue();
+        }
+
         System.out.println("Geben sie den Hersteller ein!");
         ManufacturerImpl manufacturer = new ManufacturerImpl(checkString());
 
@@ -152,7 +157,7 @@ public class MainBoerse {
         showMenu(4);
 
         System.out.println("Geben sie einen Suchbegriff ein: ");
-        String input = checkString();
+        String input = checkString().toLowerCase();
 
         printVehicles(searchVehicleList(input));
     }
@@ -161,13 +166,13 @@ public class MainBoerse {
         ArrayList<Vehicle> searchList = new ArrayList<>();
 
         for (int index = 0; index < vehicleExchange.getVehicleList().size(); index++) {
-            if (vehicleExchange.getVehicleList().get(index).getVehicleType().equals(input)
-                    || vehicleExchange.getVehicleList().get(index).getColor().equals(input)
-                    || vehicleExchange.getVehicleList().get(index).getManufacturer().getName().equals(input)
-                    || vehicleExchange.getVehicleList().get(index).getModel().equals(input)
-                    || vehicleExchange.getVehicleList().get(index).getVehicleType().equals(input)
-                    || String.valueOf(vehicleExchange.getVehicleList().get(index).getConstructionYear()).equals(input)
-                    || String.valueOf(vehicleExchange.getVehicleList().get(index).getPrice()).equals(input)) {
+            if (vehicleExchange.getVehicleList().get(index).getVehicleType().toLowerCase().equals(input)
+                    || vehicleExchange.getVehicleList().get(index).getColor().toLowerCase().equals(input)
+                    || vehicleExchange.getVehicleList().get(index).getManufacturer().getName().toLowerCase().equals(input)
+                    || vehicleExchange.getVehicleList().get(index).getModel().toLowerCase().equals(input)
+                    || vehicleExchange.getVehicleList().get(index).getVehicleType().toLowerCase().equals(input)
+                    || String.valueOf(vehicleExchange.getVehicleList().get(index).getConstructionYear()).toLowerCase().equals(input)
+                    || String.valueOf(vehicleExchange.getVehicleList().get(index).getPrice()).toLowerCase().equals(input)) {
                 searchList.add(vehicleExchange.getVehicleList().get(index));
             }
         }
